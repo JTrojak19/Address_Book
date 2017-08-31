@@ -3,6 +3,4 @@ address_book:
     type:     annotation
     prefix:   /
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
+
