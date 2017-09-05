@@ -41,9 +41,43 @@ class DefaultController extends Controller
              $em = $this->getDoctrine()->getManager();
              $em->persist($contact);
              $em->flush();
-             return new Response('New Contact Created'); 
+             return $this->redirect('index.html.twig'); 
          }
          return $this->render('new.html.twig', array(
+            'form' => $form->createView(), 
+             ));
+    }
+    /**
+     * 
+     * @Route("/{id}/modify")
+     */
+    public function modifyFormAction(Request $request, $id)
+    {
+        $contact = new Contact(); 
+        $contact = $this->getDoctrine()
+                ->getRepository('AddressBookBundle:Contact')
+                ->find($id); 
+        
+        if (!$contact)
+        {
+            throw $this->createNotFoundException('Contact not found'); 
+        }
+        
+        $form = $this->createFormBuilder($contact)
+                ->add('name')
+                ->add('surname')
+                ->add('description')
+                ->getForm(); 
+        $form->handleRequest($request); 
+        
+        if ($form->isSubmitted() && $form->isValid())
+         {
+             $contact = $form->getData();
+             $em = $this->getDoctrine()->getManager();
+             $em->flush();
+             return $this->redirect('index.html.twig'); 
+         }
+         return $this->render('modify.html.twig', array(
             'form' => $form->createView(), 
              ));
     }
