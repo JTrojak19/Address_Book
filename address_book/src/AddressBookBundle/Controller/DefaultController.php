@@ -18,7 +18,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('index.html.twig');
+        $contacts = $this->getDoctrine()
+                ->getRepository('AddressBookBundle:Contact')
+                ->findAll(); 
+        return new Response(var_dump($contacts)); 
     }
     /**
      * @Route("/new")
