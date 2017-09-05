@@ -41,7 +41,6 @@ class DefaultController extends Controller
              $em = $this->getDoctrine()->getManager();
              $em->persist($contact);
              $em->flush();
-             return $this->redirect('index.html.twig'); 
          }
          return $this->render('new.html.twig', array(
             'form' => $form->createView(), 
@@ -51,7 +50,7 @@ class DefaultController extends Controller
      * 
      * @Route("/{id}/modify")
      */
-    public function modifyFormAction(Request $request, $id)
+    public function modifyAction(Request $request, $id)
     {
         $contact = new Contact(); 
         $contact = $this->getDoctrine()
@@ -75,10 +74,37 @@ class DefaultController extends Controller
              $contact = $form->getData();
              $em = $this->getDoctrine()->getManager();
              $em->flush();
-             return $this->redirect('index.html.twig'); 
+              
          }
          return $this->render('modify.html.twig', array(
             'form' => $form->createView(), 
              ));
     }
+    /**
+     * 
+     * @Route("{id}/delete")
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $contact = new Contact(); 
+        $contact = $this->getDoctrine()
+                ->getRepository('AddressBookBundle:Contact')
+                ->find($id); 
+        
+        if (!$contact)
+        {
+            throw $this->createNotFoundException('Contact not found'); 
+        }
+        
+   
+            $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+            $em->remove($contact);
+            $em->flush();
+            
+        
+    }
+   
 }
