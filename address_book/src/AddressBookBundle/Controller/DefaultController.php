@@ -41,6 +41,7 @@ class DefaultController extends Controller
              $em = $this->getDoctrine()->getManager();
              $em->persist($contact);
              $em->flush();
+             return new Response("Kontakt został utworzony");
          }
          return $this->render('new.html.twig', array(
             'form' => $form->createView(), 
@@ -74,6 +75,7 @@ class DefaultController extends Controller
              $contact = $form->getData();
              $em = $this->getDoctrine()->getManager();
              $em->flush();
+             return new Response("Kontakt został zmodyfikowany"); 
               
          }
          return $this->render('modify.html.twig', array(
@@ -102,9 +104,24 @@ class DefaultController extends Controller
             ->getManager();
 
             $em->remove($contact);
-            $em->flush();
-            
+            $em->flush(); 
+            return new Response ("Kontakt został usunięty"); 
+    }
+    /**
+     * 
+     * @Route("/{id}")
+     */
+    public function showOneAction($id)
+    {
+        $contact = $this->getDoctrine()
+                ->getRepository('AddressBookBundle:Contact')
+                ->find($id); 
         
+        if (!$contact)
+        {
+            throw $this->createNotFoundException('Contact now found'); 
+        }
+        return new Response(var_dump($contact)); 
     }
    
 }
