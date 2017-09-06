@@ -1,2 +1,25 @@
-Welcome! This is the main site of the Address Book. 
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Address Book</title>
+    </head>
+    <body>
+        <h1>Contacts</h1>
+        {% for contact in contacts%}
+            <p>
+                Name: {{contact.name}}
+            </p>
+            <p>
+                Surname: {{contact.surname}}
+            </p>
+            <p>
+                Description: {{contact.description}}
+            </p>
+            <a href="{{path('addressbook_default_showone', {'id': contact.id})}}">Show</a>
+            <hr>
+        {%endfor%}
+        <a href="{{path('addressbook_default_addnewform')}}">New</a>
+        
+    </body>
+</html>
 

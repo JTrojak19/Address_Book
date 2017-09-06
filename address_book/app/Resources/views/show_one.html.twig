@@ -1,0 +1,7 @@
+{# empty Twig template #}
+<p>Name: {{contact.name}}</p>
+<p>Surname: {{contact.surname}}</p>
+<p>Description: {{contact.description}}</p>
+<a href="{{path('addressbook_default_index')}}">Return</a>
+<a href="{{path('addressbook_default_modify', {'id': contact.id})}}">Modify</a>
+<a href="{{path('addressbook_default_delete', {'id': contact.id})}}">Delete</a>

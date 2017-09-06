@@ -14,18 +14,18 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/")
-     * 
+     * @Template("AddressBookBundle:index.html.twig")
      */
     public function indexAction()
     {
         $contacts = $this->getDoctrine()
                 ->getRepository('AddressBookBundle:Contact')
                 ->findAll(); 
-        return new Response(var_dump($contacts)); 
+        return $this->render('index.html.twig', array('contacts' => $contacts));
     }
     /**
-     * @Route("/new")
-     * 
+     * @Route("/new") 
+     * @Template("AddressBookBundle:new.html.twig")
      */
     public function addNewFormAction(Request $request)
     {
@@ -44,7 +44,7 @@ class DefaultController extends Controller
              $em = $this->getDoctrine()->getManager();
              $em->persist($contact);
              $em->flush();
-             return new Response("Kontakt został utworzony");
+             return $this->redirectToRoute('addressbook_default_showone', array('id' => $contact->getId()));
          }
          return $this->render('new.html.twig', array(
             'form' => $form->createView(), 
@@ -78,8 +78,8 @@ class DefaultController extends Controller
              $contact = $form->getData();
              $em = $this->getDoctrine()->getManager();
              $em->flush();
-             return new Response("Kontakt został zmodyfikowany"); 
-              
+             
+              return $this->redirectToRoute('addressbook_default_modify', array('id' => $contact->getId()));
          }
          return $this->render('modify.html.twig', array(
             'form' => $form->createView(), 
@@ -108,7 +108,8 @@ class DefaultController extends Controller
 
             $em->remove($contact);
             $em->flush(); 
-            return new Response ("Kontakt został usunięty"); 
+                         return $this->redirectToRoute('addressbook_default_delete', array('id' => $contact->getId()));
+            
     }
     /**
      * 
@@ -124,7 +125,7 @@ class DefaultController extends Controller
         {
             throw $this->createNotFoundException('Contact now found'); 
         }
-        return new Response(var_dump($contact)); 
+        return $this->render('show_one.html.twig', array('contact' => $contact));
     }
    
 }
